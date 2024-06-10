@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1047902548258",
+    "project_id": "spin-it-43eac",
+    "storage_bucket": "spin-it-43eac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047902548258:android:cabd5bde67400e28daf57b",
+        "android_client_info": {
+          "package_name": "com.GamesHarbor.SpinIt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047902548258-d68m70f2ge20e42mb61o20tn9mtiihqj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA-5TdeLX3EA0SsObfHnvSRsQerm02bUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047902548258-d68m70f2ge20e42mb61o20tn9mtiihqj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
