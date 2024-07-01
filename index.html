@@ -6,6 +6,7 @@
     <title>Unity WebGL Player | Match TriTON</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -100,6 +101,8 @@
 
       loadingBar.style.display = "block";
 
+      Telegram.WebApp.ready();
+
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
@@ -107,6 +110,7 @@
           progressBarFull.style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 loadingBar.style.display = "none";
+                Telegram.WebApp.expand();
                 fullscreenButton.onclick = () => {
                   unityInstance.SetFullscreen(1);
                 };
@@ -119,7 +123,7 @@
 
     </script>
     <div class="overlay-text">
-      <p>Ver 1.0</p>
+      <p>Thank you for playing Match TriTON! Enjoy your game.</p>
     </div>
   </body>
 </html>
