@@ -118,12 +118,6 @@
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
           loadingBar.style.display = "none";
-                // Telegram Web App integration
-      Telegram.WebApp.ready();
-      window.onload = function() {
-        Telegram.WebApp.expand();
-      };
-      Telegram.WebApp.disableClosingConfirmation();
           fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
           };
@@ -134,9 +128,46 @@
 
       document.body.appendChild(script);
 
+      // Telegram Web App integration
+      Telegram.WebApp.ready();
+
+      window.onload = function() {
+        Telegram.WebApp.expand();
+      };
+
+      // Scroll blocking logic
+      const overflow = 100;
+      document.body.style.overflowY = 'hidden';
+      document.body.style.marginTop = `${overflow}px`;
+      document.body.style.height = window.innerHeight + overflow + "px";
+      document.body.style.paddingBottom = `${overflow}px`;
+      window.scrollTo(0, overflow);
+
+      let ts;
+      const onTouchStart = (e) => {
+        ts = e.touches[0].clientY;
+      };
+      const onTouchMove = (e) => {
+        const scrollableEl = document.querySelector('.scrollable'); // Убедитесь, что у вас есть элемент с классом "scrollable"
+        if (scrollableEl) {
+          const scroll = scrollableEl.scrollTop;
+          const te = e.changedTouches[0].clientY;
+          if (scroll <= 0 && ts < te) {
+            e.preventDefault();
+          }
+        } else {
+          e.preventDefault();
+        }
+      };
+      document.documentElement.addEventListener('touchstart', onTouchStart, { passive: false });
+      document.documentElement.addEventListener('touchmove', onTouchMove, { passive: false });
+
     </script>
     <div class="scrollable">
       <!-- Контент, который нужно прокручивать -->
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+      <p>Ver 1.0</p>
     </div>
   </body>
 </html>
