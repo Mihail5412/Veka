@@ -133,9 +133,8 @@
       
       window.onload = function() {
         Telegram.WebApp.expand();
-      };
 
-      // Scroll blocking logic
+        // Scroll blocking logic
       const overflow = 100;
       document.body.style.overflowY = 'hidden';
       document.body.style.marginTop = `${overflow}px`;
@@ -161,6 +160,9 @@
       };
       document.documentElement.addEventListener('touchstart', onTouchStart, { passive: false });
       document.documentElement.addEventListener('touchmove', onTouchMove, { passive: false });
+      };
+
+      
 
     </script>
     <div class="scrollable">
