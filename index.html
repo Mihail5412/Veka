@@ -10,7 +10,7 @@
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=540 height=960 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -95,60 +95,53 @@
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
-        canvas.style.width = "1080px";
-        canvas.style.height = "1920px";
+        canvas.style.width = "540px";
+        canvas.style.height = "960px";
       }
 
       loadingBar.style.display = "block";
-
-      Telegram.WebApp.ready();
+      
+      Telegram.WebApp.ready();  
       Telegram.WebApp.expand();
+
+      const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+          manifestUrl: 'https://gospelofmyheart.github.io/TriTONPitch/tonconnect.json',
+          buttonRootId: 'ton-connect'
+      });
+
+      tonConnectUI.uiOptions = {
+        twaReturnUrl: 'https://t.me/match_triton_bot/app'
+      };
+
+
 
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                loadingBar.style.display = "none";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          fullscreenButton.onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
 
-                // Scroll blocking logic
-      const overflow = 1;
-      document.body.style.overflowY = 'hidden';
-      document.body.style.marginTop = `${overflow}px`;
-      document.body.style.height = window.innerHeight + overflow + "px";
-      document.body.style.paddingBottom = `${overflow}px`;
-      window.scrollTo(0, overflow);
-
-      let ts;
-      const onTouchStart = (e) => {
-        ts = e.touches[0].clientY;
-      };
-      const onTouchMove = (e) => {
-        const scrollableEl = document.querySelector('.scrollable'); // Убедитесь, что у вас есть элемент с классом "scrollable"
-        if (scrollableEl) {
-          const scroll = scrollableEl.scrollTop;
-          const te = e.changedTouches[0].clientY;
-          if (scroll <= 0 && ts < te) {
-            e.preventDefault();
+          async function connectToWallet() {
+            const connectedWallet = await tonConnectUI.connectWallet();
+            unityInstance.SendMessage('TonConnect', 'AuthenticationCompleted', true);
           }
-        } else {
-          e.preventDefault();
-        }
+          
+          connectToWallet().catch(error => {
+            logDebugMessage("Error connecting to wallet:", error);
+          });
+          
+
+        }).catch((message) => {
+          logDebugMessage('Unity instance creation failed: ' + message);
+        });
       };
-      document.documentElement.addEventListener('touchstart', onTouchStart, { passive: false });
-      document.documentElement.addEventListener('touchmove', onTouchMove, { passive: false });
 
-                fullscreenButton.onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-
-      document.body.appendChild(script);
-
+      document.body.appendChild(script);  
     </script>
   </body>
 </html>
