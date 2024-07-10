@@ -28,7 +28,8 @@
 
   <div id="ton-connect"></div>
   <div id="debug-log" style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 10px; z-index: 1000; max-width: 300px; overflow: auto;"></div>
-
+  <div class="scrollable">
+  </div>
   <script>
     var container = document.querySelector("#unity-container");
     var canvas = document.querySelector("#unity-canvas");
@@ -92,6 +93,32 @@
 
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
+    
+    const overflow = 1;
+      document.body.style.overflowY = 'hidden';
+      document.body.style.marginTop = `${overflow}px`;
+      document.body.style.height = window.innerHeight + overflow + "px";
+      document.body.style.paddingBottom = `${overflow}px`;
+      window.scrollTo(0, overflow);
+
+      let ts;
+      const onTouchStart = (e) => {
+        ts = e.touches[0].clientY;
+      };
+      const onTouchMove = (e) => {
+        const scrollableEl = document.querySelector('.scrollable');
+        if (scrollableEl) {
+          const scroll = scrollableEl.scrollTop;
+          const te = e.changedTouches[0].clientY;
+          if (scroll <= 0 && ts < te) {
+            e.preventDefault();
+          }
+        } else {
+          e.preventDefault();
+        }
+      };
+      document.documentElement.addEventListener('touchstart', onTouchStart, { passive: false });
+      document.documentElement.addEventListener('touchmove', onTouchMove, { passive: false });
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://gospelofmyheart.github.io/TriTONPitch/tonconnect.json',
