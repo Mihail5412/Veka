@@ -149,6 +149,10 @@
       };
       document.documentElement.addEventListener('touchstart', onTouchStart, { passive: false });
       document.documentElement.addEventListener('touchmove', onTouchMove, { passive: false });
+        
+        window.onUnityReady = async function() {
+          unityInstance.SendMessage('TonConnect', 'AuthenticationCompleted');
+          }
 
       }).catch((message) => {
         logDebugMessage('Unity instance creation failed: ' + message);
