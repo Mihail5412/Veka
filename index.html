@@ -94,25 +94,6 @@
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
 
-    const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-        manifestUrl: 'https://gospelofmyheart.github.io/TriTONPitch/tonconnect.json',
-        buttonRootId: 'ton-connect',
-    });
-
-    tonConnectUI.uiOptions = {
-      twaReturnUrl: 'https://t.me/match_triton_bot/app'
-  };
-
-    var connectionWalletResult = false;
-    async function connectToWallet() {
-        const connectedWallet = await tonConnectUI.connectWallet();
-        connectionWalletResult = true;
-    }
-
-    connectToWallet().catch(error => {
-        console.error("Error connecting to wallet:", error);
-    });
-
     var script = document.createElement("script");
     script.src = loaderUrl;
     script.onload = () => {
