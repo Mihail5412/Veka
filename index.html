@@ -22,12 +22,11 @@
     <div id="unity-footer">
       <div id="unity-webgl-logo"></div>
       <div id="unity-fullscreen-button"></div>
-      <div id="unity-build-title">CatsTitans</div>
+      <div id="unity-build-title">Match TriTON</div>
     </div>
   </div>
+
   <div id="ton-connect"></div>
-  
-  <!-- Add an element for displaying debug messages -->
   <div id="debug-log" style="position: absolute; top: 10px; left: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 10px; z-index: 1000; max-width: 300px; overflow: auto;"></div>
 
   <script>
@@ -91,24 +90,27 @@
 
     loadingBar.style.display = "block";
 
-    // Telegram Web App initialization
     Telegram.WebApp.ready();
-    logDebugMessage('Telegram WebApp ready. v1.4');
+    Telegram.WebApp.expand();
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://gospelofmyheart.github.io/TriTONPitch/tonconnect.json',
-        buttonRootId: 'ton-connect'
+        buttonRootId: 'ton-connect',
+        uiPreferences: {
+          borderRadius: 'none'
+        }
     });
 
     tonConnectUI.uiOptions = {
-      twaReturnUrl: 'https://t.me/cats_titans_bot/app'
+      twaReturnUrl: 'https://t.me/match_triton_bot/app'
   };
 
+    var connectionWalletResult = false;
     async function connectToWallet() {
         const connectedWallet = await tonConnectUI.connectWallet();
+        connectionWalletResult = true;
     }
 
-    // Call the function
     connectToWallet().catch(error => {
         console.error("Error connecting to wallet:", error);
     });
@@ -124,9 +126,12 @@
           unityInstance.SetFullscreen(1);
         };
         
-        window.onUnityReady = function() {
-          unityInstance.SendMessage('TonConnect', 'AuthenticationCompleted', true);
-        };
+        window.onUnityReady = async function() {
+          while (!connectionWalletResult) {
+            await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            unityInstance.SendMessage('TonConnect', 'AuthenticationCompleted');
+          }
 
       }).catch((message) => {
         logDebugMessage('Unity instance creation failed: ' + message);
