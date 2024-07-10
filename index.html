@@ -84,13 +84,12 @@
       container.className = "unity-mobile";
       canvas.className = "unity-mobile";
     } else {
-      canvas.style.width = "540";
-      canvas.style.height = "960";
+      canvas.style.width = "270";
+      canvas.style.height = "480";
     }
 
     loadingBar.style.display = "block";
 
-    logDebugMessage('Ton Ready');
     Telegram.WebApp.ready();
     Telegram.WebApp.expand();
 
