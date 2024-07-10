@@ -104,15 +104,14 @@
       twaReturnUrl: 'https://t.me/cats_titans_bot/app'
   };
 
-  async function connectToWallet(unityInstance) {
-        try {
-          const connectedWallet = await tonConnectUI.connectWallet();
-          unityInstance.SendMessage('TonConnect', 'AuthenticationCompleted', true);
-          logDebugMessage('SENDED');
-        } catch (error) {
-          logDebugMessage("Error connecting to wallet:", error);
-        }
-      }
+    async function connectToWallet() {
+        const connectedWallet = await tonConnectUI.connectWallet();
+    }
+
+    // Call the function
+    connectToWallet().catch(error => {
+        console.error("Error connecting to wallet:", error);
+    });
 
     var script = document.createElement("script");
     script.src = loaderUrl;
@@ -125,9 +124,9 @@
           unityInstance.SetFullscreen(1);
         };
         
-        connectToWallet(unityInstance).catch(error => {
-          console.error("Error connecting to wallet:", error);
-        });
+        window.onUnityReady = function() {
+          unityInstance.SendMessage('TonConnect', 'AuthenticationCompleted', true);
+        };
 
       }).catch((message) => {
         logDebugMessage('Unity instance creation failed: ' + message);
